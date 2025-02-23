@@ -1,0 +1,74 @@
+<div class="container mx-auto mt-0">
+  <!-- Barra de navegación -->
+  <nav class="bg-gray-200 p-4 rounded-lg shadow-md mb-6 flex justify-center space-x-4">
+    <button (click)="toggleVista()" 
+            class="px-4 py-2 rounded-lg text-white font-semibold transition duration-300"
+            [ngClass]="{'bg-blue-500 hover:bg-blue-700': !mostrarPerfiles, 
+                        'bg-gray-500 hover:bg-gray-700': mostrarPerfiles}">
+      {{ mostrarPerfiles ? 'Volver al Formulario' : 'Mostrar Perfiles' }}
+    </button>
+  </nav>
+
+  <h1 class="mb-4 text-2xl font-bold text-center">Gestión de Usuarios</h1>
+
+  <!-- Mostrar formulario si NO se han seleccionado perfiles -->
+  <app-new *ngIf="!mostrarPerfiles"></app-new>
+
+  <!-- Mostrar lista de perfiles si NO se está editando -->
+  <div *ngIf="mostrarPerfiles && !editandoPerfil">
+    <h2 class="mb-4">Lista de Usuarios</h2>
+    <ul>
+      <li *ngFor="let message of message$ | async" class="mb-2 p-2 border rounded shadow">
+        <p><strong>Nombre:</strong> {{ message.nombre }}</p>
+        <p><strong>Edad:</strong> {{ message.edad }}</p>
+        <p><strong>Correo:</strong> {{ message.correo }}</p>
+        <p><strong>Altura:</strong> {{ message.altura }} cm</p>
+        <p><strong>Peso:</strong> {{ message.peso }} kg</p>
+
+        <div class="flex space-x-2 mt-2">
+          <!-- Botón para editar -->
+          <button (click)="editarPerfil(message)" class="px-4 py-2 text-white bg-yellow-500 rounded-md">
+            Editar
+          </button>  
+
+          <!-- Botón para eliminar -->
+          <button (click)="eliminarPerfil(message)" class="px-4 py-2 text-white bg-red-500 rounded-md">
+            Eliminar
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mostrar formulario de edición si se está editando -->
+  <div *ngIf="editandoPerfil">
+    <h2 class="mb-4">Editar Perfil</h2>
+    <form [formGroup]="editarPerfilForm" (ngSubmit)="guardarCambios()">
+      <div class="mb-4">
+        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input id="nombre" formControlName="nombre" type="text" class="w-full p-2 border rounded-md" />
+
+        <label for="correo" class="block text-sm font-medium text-gray-700">Correo</label>
+        <input id="correo" formControlName="correo" type="email" class="w-full p-2 border rounded-md" />
+
+        <label for="edad" class="block text-sm font-medium text-gray-700">Edad</label>
+        <input id="edad" formControlName="edad" type="number" class="w-full p-2 border rounded-md" />
+
+        <label for="altura" class="block text-sm font-medium text-gray-700">Altura</label>
+        <input id="altura" formControlName="altura" type="number" class="w-full p-2 border rounded-md" />
+
+        <label for="peso" class="block text-sm font-medium text-gray-700">Peso</label>
+        <input id="peso" formControlName="peso" type="number" class="w-full p-2 border rounded-md" />
+      </div>
+
+      <div class="flex space-x-2">
+        <button type="submit" class="px-4 py-2 text-white bg-green-500 rounded-md">
+          Guardar Cambios
+        </button>
+        <button type="button" (click)="cancelarEdicion()" class="px-4 py-2 text-white bg-red-500 rounded-md">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

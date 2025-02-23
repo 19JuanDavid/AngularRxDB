@@ -1,0 +1,52 @@
+<form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+  <div class="mb-4">
+    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+    <input
+      id="nombre"
+      formControlName="nombre"
+      type="text"
+      class="w-full p-2 border rounded-md"
+      required
+    />
+
+    <label for="correo" class="block text-sm font-medium text-gray-700">Correo</label>
+    <input
+      id="correo"
+      formControlName="correo"
+      type="email"
+      class="w-full p-2 border rounded-md"
+      required
+    />
+
+    <label for="edad" class="block text-sm font-medium text-gray-700">Edad</label>
+    <input
+      id="edad"
+      formControlName="edad"
+      type="number"
+      class="w-full p-2 border rounded-md"
+      required
+    />
+
+    <label for="altura" class="block text-sm font-medium text-gray-700">Altura (cm)</label>
+    <input
+      id="altura"
+      formControlName="altura"
+      type="number"
+      class="w-full p-2 border rounded-md"
+      required
+    />
+
+    <label for="peso" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+    <input
+      id="peso"
+      formControlName="peso"
+      type="number"
+      class="w-full p-2 border rounded-md"
+      required
+    />
+  </div>
+
+  <button class="px-4 py-2 text-white bg-blue-500 rounded-md">
+    Añadir mensaje
+  </button>
+</form>
