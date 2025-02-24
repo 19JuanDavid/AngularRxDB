@@ -1,21 +1,8 @@
 <div class="container mx-auto mt-0">
-  <!-- Barra de navegación -->
-  <nav class="bg-gray-200 p-4 rounded-lg shadow-md mb-6 flex justify-center space-x-4">
-    <button (click)="toggleVista()" 
-            class="px-4 py-2 rounded-lg text-white font-semibold transition duration-300"
-            [ngClass]="{'bg-blue-500 hover:bg-blue-700': !mostrarPerfiles, 
-                        'bg-gray-500 hover:bg-gray-700': mostrarPerfiles}">
-      {{ mostrarPerfiles ? 'Volver al Formulario' : 'Mostrar Perfiles' }}
-    </button>
-  </nav>
-
   <h1 class="mb-4 text-2xl font-bold text-center">Gestión de Usuarios</h1>
 
-  <!-- Mostrar formulario si NO se han seleccionado perfiles -->
-  <app-new *ngIf="!mostrarPerfiles"></app-new>
-
-  <!-- Mostrar lista de perfiles si NO se está editando -->
-  <div *ngIf="mostrarPerfiles && !editandoPerfil">
+  <!-- Mostrar lista de perfiles -->
+  <div *ngIf="!editandoPerfil">
     <h2 class="mb-4">Lista de Usuarios</h2>
     <ul>
       <li *ngFor="let message of message$ | async" class="mb-2 p-2 border rounded shadow">
@@ -26,12 +13,10 @@
         <p><strong>Peso:</strong> {{ message.peso }} kg</p>
 
         <div class="flex space-x-2 mt-2">
-          <!-- Botón para editar -->
           <button (click)="editarPerfil(message)" class="px-4 py-2 text-white bg-yellow-500 rounded-md">
             Editar
           </button>  
 
-          <!-- Botón para eliminar -->
           <button (click)="eliminarPerfil(message)" class="px-4 py-2 text-white bg-red-500 rounded-md">
             Eliminar
           </button>

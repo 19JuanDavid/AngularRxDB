@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { CommonModule } from '@angular/common';
 import { RxDocumentBase } from 'rxdb';
+import { Router } from '@angular/router';  // Importamos Router
 
 @Component({
   selector: 'app-new',
@@ -13,11 +14,12 @@ import { RxDocumentBase } from 'rxdb';
 export class NewComponent implements OnInit {
   messageForm!: FormGroup;
   dbSvc = inject(DbService);
+  router = inject(Router);  // Inyectamos el servicio Router
 
   constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.createForm();  // Inicializa el formulario cuando se carga el componente
+    this.createForm();
   }
 
   // Método para manejar el envío del formulario
@@ -38,14 +40,15 @@ export class NewComponent implements OnInit {
       altura,
       peso,
       timestamp: new Date().toISOString(),  // Establecer un timestamp
-    } as unknown as RxDocumentBase<{}, {}>;  // Se puede especificar el tipo si se requiere
+    } as unknown as RxDocumentBase<{}, {}>;
 
     try {
-      const db = await this.dbSvc.getDb();  // Obtenemos la instancia de la base de datos
+      const db = await this.dbSvc.getDb();
       if (db) {
         // Insertar el mensaje en la colección 'message'
         await db.message.insert(data);
         this.messageForm.reset();  // Limpiar el formulario después de guardar
+        this.router.navigate(['/list']);  // Redirigir a la vista de perfiles
       } else {
         console.error('Base de datos no inicializada');
       }
