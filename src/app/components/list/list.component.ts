@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable, of, catchError, map } from 'rxjs';
-import { NewComponent } from '../new/new.component';
 import { DbService } from '../../services/db.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,13 +18,12 @@ interface Perfil {
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [CommonModule, NewComponent, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
   public message$!: Observable<Perfil[]>;
-  public mostrarPerfiles = false;
   public editarPerfilForm!: FormGroup;
   public perfilSeleccionado: Perfil | null = null;
   public editandoPerfil: boolean = false;  // Bandera para controlar la vista del formulario
@@ -50,7 +48,7 @@ export class ListComponent implements OnInit {
           })
         );
       } else {
-        console.error('Database not initialized');
+        console.error('Base de datos no inicializada');
         this.message$ = of([]);
       }
     } catch (error) {
@@ -58,14 +56,11 @@ export class ListComponent implements OnInit {
       this.message$ = of([]);
     }
   }
-  toggleVista() {
-    this.mostrarPerfiles = !this.mostrarPerfiles;
-  }
 
   // Método para editar perfil
   editarPerfil(perfil: Perfil) {
     this.perfilSeleccionado = perfil;
-    this.editandoPerfil = true;  // Activamos la edición
+    this.editandoPerfil = true;
     this.editarPerfilForm = this.fb.group({
       nombre: [perfil.nombre],
       correo: [perfil.correo],
@@ -78,7 +73,7 @@ export class ListComponent implements OnInit {
   // Método para cancelar la edición
   cancelarEdicion() {
     this.perfilSeleccionado = null;
-    this.editandoPerfil = false;  // Desactivamos la edición
+    this.editandoPerfil = false;
   }
 
   // Método para guardar los cambios
@@ -104,7 +99,7 @@ export class ListComponent implements OnInit {
 
         // Reiniciar el perfil seleccionado y el formulario
         this.perfilSeleccionado = null;
-        this.editandoPerfil = false;  // Desactivamos la edición
+        this.editandoPerfil = false;
         this.editarPerfilForm.reset();
         this.loadMessages(); // Recargar los perfiles después de la edición
       } catch (error) {
@@ -112,21 +107,20 @@ export class ListComponent implements OnInit {
       }
     }
   }
+
+  // Método para eliminar perfil
   async eliminarPerfil(perfil: Perfil) {
     const db = await this.dbsvc.getDb();
     if (db && perfil.id) {
       try {
-        // Buscar el documento por su id
         const doc = await db.message.findOne({ selector: { id: perfil.id } }).exec();
         if (doc) {
-          // Eliminar el documento encontrado
           await doc.remove();
           console.log(`Perfil con ID ${perfil.id} eliminado`);
         } else {
           console.error('Documento no encontrado');
         }
-        // Recargar los perfiles después de la eliminación
-        this.loadMessages();
+        this.loadMessages();  // Recargar los perfiles después de la eliminación
       } catch (error) {
         console.error('Error al eliminar el perfil', error);
       }

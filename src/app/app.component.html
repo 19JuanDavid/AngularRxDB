@@ -1,3 +1,16 @@
-<div class="container p-4 mx-auto">
-  <app-list></app-list>
+<div class="container mx-auto mt-0">
+  <!-- Barra de navegación -->
+  <nav class="bg-gray-200 p-4 rounded-lg shadow-md mb-6 flex justify-center space-x-4">
+    <a routerLink="/new" routerLinkActive="text-blue-500" 
+       class="px-4 py-2 rounded-lg text-white font-semibold bg-blue-500 hover:bg-blue-700">
+      Nuevo Perfil
+    </a>
+    <a routerLink="/list" routerLinkActive="text-blue-500" 
+       class="px-4 py-2 rounded-lg text-white font-semibold bg-green-500 hover:bg-green-700">
+      Ver Perfiles
+    </a>
+  </nav>
+
+  <!-- Aquí se cargan las vistas según la ruta -->
+  <router-outlet></router-outlet>
 </div>
